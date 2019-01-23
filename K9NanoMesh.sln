@@ -14,15 +14,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "K9NanoMesh.Remote", "src\K9NanoMesh.Remote\K9NanoMesh.Remote.csproj", "{E1B240DC-513D-4F6F-A443-4AAA92EBA4C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "K9NanoMesh.Core", "src\K9NanoMesh.Core\K9NanoMesh.Core.csproj", "{16272374-5ED7-47CA-8674-C8331364D660}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "K9NanoMesh.Core", "src\K9NanoMesh.Core\K9NanoMesh.Core.csproj", "{16272374-5ED7-47CA-8674-C8331364D660}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{221352EB-58CF-4152-A06D-2A9704B26CAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Client", "samples\Sample.Client\Sample.Client.csproj", "{80F1C5F0-2F66-40B5-962E-834C164CA900}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Client", "samples\Sample.Client\Sample.Client.csproj", "{80F1C5F0-2F66-40B5-962E-834C164CA900}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleService.Abstractions", "samples\SampleService.Abstractions\SampleService.Abstractions.csproj", "{D3E171C3-192D-4565-8CE7-54FBB01F6E35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleService.Abstractions", "samples\SampleService.Abstractions\SampleService.Abstractions.csproj", "{D3E171C3-192D-4565-8CE7-54FBB01F6E35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Host", "Sample.Host\Sample.Host.csproj", "{07C88613-344F-4275-9770-1EAF0A068BB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Host", "samples\Sample.Host\Sample.Host.csproj", "{6B47EE7C-FEED-4D2D-B9B9-10274B73F2E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "K9NanoMesh.Remote.Test", "test\K9NanoMesh.Remote.Test\K9NanoMesh.Remote.Test.csproj", "{9EE11BC6-EB19-429D-B05A-F49CB14BF416}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +48,14 @@ Global
 		{D3E171C3-192D-4565-8CE7-54FBB01F6E35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3E171C3-192D-4565-8CE7-54FBB01F6E35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3E171C3-192D-4565-8CE7-54FBB01F6E35}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07C88613-344F-4275-9770-1EAF0A068BB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07C88613-344F-4275-9770-1EAF0A068BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07C88613-344F-4275-9770-1EAF0A068BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07C88613-344F-4275-9770-1EAF0A068BB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B47EE7C-FEED-4D2D-B9B9-10274B73F2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B47EE7C-FEED-4D2D-B9B9-10274B73F2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B47EE7C-FEED-4D2D-B9B9-10274B73F2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B47EE7C-FEED-4D2D-B9B9-10274B73F2E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EE11BC6-EB19-429D-B05A-F49CB14BF416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EE11BC6-EB19-429D-B05A-F49CB14BF416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EE11BC6-EB19-429D-B05A-F49CB14BF416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EE11BC6-EB19-429D-B05A-F49CB14BF416}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,7 +65,8 @@ Global
 		{16272374-5ED7-47CA-8674-C8331364D660} = {A6ECBDAC-0F43-4A6F-9350-C9D4F7E71943}
 		{80F1C5F0-2F66-40B5-962E-834C164CA900} = {221352EB-58CF-4152-A06D-2A9704B26CAC}
 		{D3E171C3-192D-4565-8CE7-54FBB01F6E35} = {221352EB-58CF-4152-A06D-2A9704B26CAC}
-		{07C88613-344F-4275-9770-1EAF0A068BB5} = {221352EB-58CF-4152-A06D-2A9704B26CAC}
+		{6B47EE7C-FEED-4D2D-B9B9-10274B73F2E5} = {221352EB-58CF-4152-A06D-2A9704B26CAC}
+		{9EE11BC6-EB19-429D-B05A-F49CB14BF416} = {6336271F-5350-499E-903E-E26AF14A5D0D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE33B42B-1816-43D5-B46D-8F1EC9C94648}

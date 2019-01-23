@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using GRpcServer = Grpc.Core.Server;
 using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
@@ -20,11 +22,19 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static IHostBuilder UseMagicOnionHost(this IHostBuilder builder, IApiInfo apiInfo)
+        public static IHostBuilder UseMagicOnionHost(this IHostBuilder builder, 
+            IApiInfo apiInfo,
+            MagicOnionOptions options = null,
+            IEnumerable<Type> types = null,
+            Assembly[] searchAssemblies = null,
+            IEnumerable<ChannelOption> channelOptions = null)
         {
             return MagicOnion.Hosting.MagicOnionServerServiceExtension.UseMagicOnion(builder,
                 new[] { new ServerPort(apiInfo.BindAddress, apiInfo.BindPort, ServerCredentials.Insecure) },
-                new MagicOnionOptions());
+                options ?? new MagicOnionOptions(),
+                types,
+                searchAssemblies,
+                channelOptions);
         }
 
         public static IHost UseGrpcLogger(this IHost host, string categoryName = "grpc")
