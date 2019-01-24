@@ -4,7 +4,7 @@ using IGrpcLogger = global::Grpc.Core.Logging.ILogger;
 
 namespace K9NanoMesh.Remote
 {
-    internal class GrpcLogger: IGrpcLogger
+    public class GrpcLogger: IGrpcLogger
     {
         private readonly ILogger _logger;
 

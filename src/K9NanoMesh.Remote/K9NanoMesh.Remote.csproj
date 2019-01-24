@@ -13,4 +13,8 @@
   <ItemGroup>
     <ProjectReference Include="..\K9NanoMesh.Core\K9NanoMesh.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Rest\" />
+  </ItemGroup>
 </Project>

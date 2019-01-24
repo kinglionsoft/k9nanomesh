@@ -24,9 +24,7 @@ namespace K9NanoMesh.Core
         string Title { get; }
 
         string Version { get; }
-
-        Assembly ApplicationAssembly { get; }
-
+        
         IDictionary<string, string> Scopes { get; }
 
         SwaggerAuthInfo SwaggerAuthInfo { get; }

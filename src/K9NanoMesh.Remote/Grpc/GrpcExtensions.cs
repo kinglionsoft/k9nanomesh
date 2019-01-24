@@ -13,46 +13,50 @@ using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class RemoteExtensions
+    public static class GrpcExtensions
     {
         public static IServiceCollection AddGrpcClient(this IServiceCollection services)
         {
             services.AddSingleton<IGrpcConnection, GrpcConnection>();
             services.AddSingleton<IGrpcChannelFactory, GrpcChannelFactory>();
+            services.AddSingleton(typeof(IGrpc<>), typeof(GrpcServiceAccessor<>));
+
             return services;
         }
 
-        public static IHostBuilder UseMagicOnionHost(this IHostBuilder builder, 
+        public static IHostBuilder UseMagicOnionHost(this IHostBuilder builder,
             IApiInfo apiInfo,
-            MagicOnionOptions options = null,
-            IEnumerable<Type> types = null,
             Assembly[] searchAssemblies = null,
+            MagicOnionOptions options = null,
             IEnumerable<ChannelOption> channelOptions = null)
         {
+            if (searchAssemblies == null)
+            {
+                searchAssemblies = new[]
+                {
+                    Assembly.GetEntryAssembly()
+                };
+            }
             return MagicOnion.Hosting.MagicOnionServerServiceExtension.UseMagicOnion(builder,
                 new[] { new ServerPort(apiInfo.BindAddress, apiInfo.BindPort, ServerCredentials.Insecure) },
                 options ?? new MagicOnionOptions(),
-                types,
+                null,
                 searchAssemblies,
                 channelOptions);
         }
 
-        public static IHost UseGrpcLogger(this IHost host, string categoryName = "grpc")
-        {
-            var logger = host.Services.GetService<ILoggerFactory>().CreateLogger(categoryName);
-            GrpcEnvironment.SetLogger(new GrpcLogger(logger));
-            return host;
-        }
-
-        public static IApplicationBuilder UseMagicOnionWebHost(this IApplicationBuilder app, IApiInfo apiInfo)
+        public static IApplicationBuilder UseMagicOnionWebHost(this IApplicationBuilder app, 
+            IApiInfo apiInfo, 
+            Assembly[] searchAssemblies = null)
         {
             var applicationLifetime = app.ApplicationServices.GetRequiredService<IApplicationLifetime>() ??
-                                      throw new ArgumentException("Missing Dependency", nameof(IApplicationLifetime));
+                                      throw new ArchitectureException($"Missing Dependency: {nameof(IApplicationLifetime)}");
 
             var loggerFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
-            var logger = loggerFactory.CreateLogger("ServiceBuilder");
+            var logger = loggerFactory.CreateLogger(apiInfo.ApiName);
+            GrpcEnvironment.SetLogger(new GrpcLogger(logger));
 
-            var grpcServer = InitializeGrpcServer(apiInfo);
+            var grpcServer = InitializeGrpcServer(apiInfo, searchAssemblies);
 
             applicationLifetime.ApplicationStopping.Register(() =>
             {
@@ -62,9 +66,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError($"GrpcServer had shutown {ex}");
+                    logger.LogError(ex, $"GrpcServer had shutdown");
                 }
-                logger.LogInformation("Removing tenant & additional health check");
+                logger.LogInformation("GrpcServer had shutdown");
             });
 
             return app;
@@ -73,14 +77,33 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// Initializing the GRPC service
         /// </summary>
-        private static GRpcServer InitializeGrpcServer(IApiInfo apiInfo)
+        private static GRpcServer InitializeGrpcServer(IApiInfo apiInfo, Assembly[] searchAssemblies)
         {
+            var option = new MagicOnionOptions
+            {
+#if DEBUG
+                IsReturnExceptionStackTraceInErrorDetail = true
+#else
+                IsReturnExceptionStackTraceInErrorDetail = false
+#endif
+            };
+
+            if (searchAssemblies == null)
+            {
+                searchAssemblies = new[]
+                {
+                    Assembly.GetEntryAssembly(),
+                };
+            }
+
             var grpcServer = new GRpcServer
             {
                 Ports = { new ServerPort(apiInfo.BindAddress, apiInfo.BindPort, ServerCredentials.Insecure) },
                 Services =
                 {
-                    MagicOnionEngine.BuildServerServiceDefinition()
+
+                    MagicOnionEngine.BuildServerServiceDefinition(
+                        searchAssemblies, option)
                 }
             };
             grpcServer.Start();

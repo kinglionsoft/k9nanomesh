@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using K9NanoMesh.Core;
 
-namespace Sample.Host
+namespace SampleService.Abstractions
 {
-    public class ApiInfo: IApiInfo
+    public class SampleApiInfo: IApiInfo
     {
         public string AuthenticationAuthority => "http://127.0.0.1:5000";
 
         public string Title => "Sample Api";
 
         public string Version => "v1";
-
-        public Assembly ApplicationAssembly => GetType().Assembly;
-
+        
         public IDictionary<string, string> Scopes => new Dictionary<string, string>
         {
             {"api1", Title}

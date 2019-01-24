@@ -2,10 +2,12 @@ using Grpc.Core;
 using MagicOnion.Hosting;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using K9NanoMesh.Core;
+using SampleService.Abstractions;
 
 namespace K9NanoMesh.Remote.Test
 {
@@ -14,9 +16,9 @@ namespace K9NanoMesh.Remote.Test
         [Fact]
         public async Task TestRemoteService()
         {
-            IApiInfo apiInfo = new TestApiInfo();
+            IApiInfo apiInfo = new SampleApiInfo();
             var host = new HostBuilder()
-                .UseMagicOnionHost(apiInfo, searchAssemblies: new [] { typeof(ITestService).Assembly } )
+                .UseMagicOnionHost(apiInfo, new Assembly[]{ typeof(HostingTest).Assembly})
                 .ConfigureServices((hostContext, service) =>
                 {
                     service.AddGrpcClient();
@@ -26,12 +28,12 @@ namespace K9NanoMesh.Remote.Test
             {
                 host.Start();
 
-                var grpcChannel = host.Services.GetRequiredService<IGrpcConnection>();
-                var service = await grpcChannel.GetRemoteService<ITestService>(apiInfo.BindAddress, apiInfo.BindPort);
+                var serviceAccessor = host.Services.GetService<IGrpc<IAddService>>();
+                var service = await serviceAccessor.GetAsync();
 
                 for (var i = 0; i < 10; i++)
                 {
-                    var ret = await service.Sum(i, i);
+                    var ret = await service.SumAsync(i, i);
                     Assert.Equal(i * 2, ret);
                 }
                 await host.StopAsync();

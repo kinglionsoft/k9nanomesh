@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\K9NanoMesh.Remote\K9NanoMesh.Remote.csproj" />
+    <PackageReference Include="MagicOnion" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\K9NanoMesh.Core\K9NanoMesh.Core.csproj" />
   </ItemGroup>
 
 </Project>
